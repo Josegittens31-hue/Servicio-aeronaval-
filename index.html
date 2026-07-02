@@ -1,0 +1,66 @@
+    <div id="pagina-calendario" class="contenido-pagina oculto"><h2 class="titulo-pag">📅 Calendario</h2><p>Calendario de actividades, misiones y capacitaciones.</p></div>
+    <div id="pagina-documentos" class="contenido-pagina oculto"><h2 class="titulo-pag">📄 Documentos</h2><div class="form-grupo"><label class="form-etiqueta">Nombre del documento</label><input type="text" class="form-campo"></div><button class="btn-guardar">Subir Documento</button></div>
+    <div id="pagina-galeria" class="contenido-pagina oculto"><h2 class="titulo-pag">🖼️ Galería</h2><p>Registro fotográfico de operaciones y actividades.</p></div>
+    <div id="pagina-estadisticas" class="contenido-pagina oculto"><h2 class="titulo-pag">📈 Estadísticas</h2><p>Informes y gráficos de gestión institucional.</p></div>
+    <div id="pagina-configuracion" class="contenido-pagina oculto"><h2 class="titulo-pag">⚙️ Configuración</h2><p>Ajustes generales del sistema.</p></div>
+    <div id="pagina-administracion" class="contenido-pagina oculto"><h2 class="titulo-pag">🔧 Administración</h2><p>Gestión de usuarios, permisos y configuración avanzada.</p></div>
+</div>
+
+<script>
+// FUNCIONES DEL SISTEMA
+function cambiarPagina(nombre) {
+    // Ocultar todas las páginas
+    document.querySelectorAll('.contenido-pagina').forEach(pag => pag.classList.add('oculto'));
+    // Quitar clase activa de todos los botones
+    document.querySelectorAll('.btn-opcion').forEach(btn => btn.classList.remove('activo'));
+    // Mostrar la página seleccionada
+    document.getElementById(`pagina-${nombre}`).classList.remove('oculto');
+    // Marcar botón como activo
+    event.currentTarget.classList.add('activo');
+}
+
+function ingresarSistema() {
+    const nom = document.getElementById('nombreUsuario').value.trim();
+    const pla = document.getElementById('placaUsuario').value.trim();
+    const cla = document.getElementById('claveAcceso').value.trim();
+
+    if(!nom || !pla || !cla) return alert('Completa todos los campos para continuar');
+
+    // Definir permisos según rol
+    let rol, unidad;
+    if(cla === 'admin123') {
+        rol = 'Administrador';
+        unidad = 'Sede Central';
+        document.getElementById('btnAdmin').classList.remove('oculto');
+    } else if(cla === 'comisionado123') {
+        rol = 'Comisionado';
+        unidad = 'Comando General';
+        document.getElementById('btnAdmin').classList.add('oculto');
+    } else if(cla === 'jefe123') {
+        rol = 'Jefe de Unidad';
+        unidad = 'Operaciones';
+        document.getElementById('btnAdmin').classList.add('oculto');
+    } else {
+        rol = 'Agente';
+        unidad = 'Patrullaje';
+        document.getElementById('btnAdmin').classList.add('oculto');
+    }
+
+    // Mostrar sistema
+    document.getElementById('pantallaLogin').classList.add('oculto');
+    document.getElementById('sistemaPrincipal').classList.remove('oculto');
+    document.getElementById('rangoMostrar').textContent = `${rol} · ${nom}`;
+    document.getElementById('unidadMostrar').textContent = `Placa: ${pla} | Unidad: ${unidad}`;
+}
+
+function cerrarSesion() {
+    document.getElementById('sistemaPrincipal').classList.add('oculto');
+    document.getElementById('pantallaLogin').classList.remove('oculto');
+    // Limpiar campos
+    document.getElementById('nombreUsuario').value = '';
+    document.getElementById('placaUsuario').value = '';
+    document.getElementById('claveAcceso').value = '';
+}
+</script>
+</body>
+</html>
